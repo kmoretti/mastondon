@@ -1,68 +1,49 @@
-/* 网页链接卡片样式 */
 .link-card-container {
-    margin: 1rem 0;
+    margin: 1rem 0 0;
 }
 
-/* 原始链接样式 */
 .original-link {
     word-break: break-all;
 }
 
-/* 卡片区域容器 */
 .link-cards-section {
-    margin-top: 1.5rem;
-    border-top: 1px dashed rgba(128, 128, 128, 0.2);
-    padding-top: 1rem;
-}
-
-/* 主题检测 - 使用CSS变量和媒体查询确保正确适配主题 */
-body[data-theme="dark"] .link-card,
-@media (prefers-color-scheme: dark) {
-    .link-card {
-        background-color: var(--ld-bg-card, #1a1a1a);
-        color: var(--ld-text, #ffffff);
-    }
-}
-
-/* 默认为浅色模式 */
-body:not([data-theme="dark"]) .link-card,
-@media (prefers-color-scheme: light), 
-@media not (prefers-color-scheme: dark) {
-    .link-card {
-        background-color: #ffffff;
-        color: #333333;
-    }
+    margin-top: 0.9rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--border-color);
 }
 
 .link-card {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    width: 20rem;
-    max-width: 90%;
-    margin: 0 auto;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    gap: 14px;
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--surface-soft);
+    color: var(--text-secondary);
     text-decoration: none;
     overflow: hidden;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .link-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    text-decoration: none;
+    background: var(--surface-hover);
 }
 
 .link-card-info {
-    flex-grow: 1;
+    flex: 1;
+    min-width: 0;
     overflow: hidden;
 }
 
 .link-card-title {
-    font-weight: bold;
-    font-size: 0.95rem;
-    margin-bottom: 0.25rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.45;
+    margin-bottom: 0.24rem;
+    color: var(--link-color);
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -71,38 +52,44 @@ body:not([data-theme="dark"]) .link-card,
 }
 
 .link-card-description {
-    opacity: 0.7;
-    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    line-height: 1.45;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
 }
 
 .link-card-icon {
     flex-shrink: 0;
-    height: 3rem;
-    max-width: 5rem;
-    border-radius: 0.5rem;
+    width: 54px;
+    height: 54px;
+    border-radius: 8px;
     object-fit: cover;
-    background-color: rgba(128, 128, 128, 0.1);
+    background: var(--surface-bg);
 }
 
-/* 加载状态 */
 .link-card.loading {
-    opacity: 0.7;
+    opacity: 0.78;
 }
 
 .link-card.loading .link-card-title,
 .link-card.loading .link-card-description {
-    background-color: rgba(128, 128, 128, 0.1);
-    border-radius: 4px;
     color: transparent;
+    border-radius: 6px;
+    background: linear-gradient(90deg, rgba(148, 163, 184, 0.18), rgba(148, 163, 184, 0.08), rgba(148, 163, 184, 0.18));
 }
 
-/* 响应式调整 */
-@media (max-width: 768px) {
+@media (max-width: 760px) {
     .link-card {
-        max-width: 95%;
-        width: auto;
+        gap: 12px;
+        padding: 11px 12px;
+    }
+
+    .link-card-icon {
+        width: 46px;
+        height: 46px;
     }
 }

@@ -1,53 +1,67 @@
-// Toggle Darkmode
-const localTheme = window.localStorage && window.localStorage.getItem("theme");
 const themeToggle = document.querySelector(".theme-toggle");
+const backToTopBtn = document.getElementById("backToTopBtn");
 
-if (localTheme) {
-    document.body.classList.remove("light-theme", "dark-theme");
-    document.body.classList.add(localTheme);
-}
-
-themeToggle.addEventListener("click", () => {
-    const themeUndefined = !new RegExp("(dark|light)-theme").test(document.body.className);
-    const isOSDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    if (themeUndefined) {
-        if (isOSDark) {
-            document.body.classList.add("light-theme");
-        } else {
-            document.body.classList.add("dark-theme");
-        }
-    } else {
-        document.body.classList.toggle("light-theme");
-        document.body.classList.toggle("dark-theme");
+function resolveTheme() {
+    const savedTheme = window.localStorage && window.localStorage.getItem("theme");
+    if (savedTheme === "light-theme" || savedTheme === "dark-theme") {
+        return savedTheme;
     }
 
-    window.localStorage &&
-        window.localStorage.setItem(
-            "theme",
-            document.body.classList.contains("dark-theme") ? "dark-theme" : "light-theme",
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark-theme"
+        : "light-theme";
+}
+
+function applyTheme(theme) {
+    document.body.classList.remove("light-theme", "dark-theme");
+    document.body.classList.add(theme);
+    document.documentElement.setAttribute(
+        "data-theme",
+        theme === "dark-theme" ? "dark" : "light",
+    );
+
+    if (window.localStorage) {
+        window.localStorage.setItem("theme", theme);
+    }
+
+    if (themeToggle) {
+        const isDark = theme === "dark-theme";
+        themeToggle.setAttribute(
+            "aria-label",
+            isDark ? "Switch to light mode" : "Switch to dark mode",
         );
-});
-// Darkmode End
-// 当页面加载完成后执行
-window.onload = function() {
-    // 获取按钮元素
-    var backToTopBtn = document.getElementById("backToTopBtn");
+        themeToggle.setAttribute("title", isDark ? "Light mode" : "Dark mode");
+    }
+}
 
-    // 当用户滚动页面时，显示或隐藏按钮
-    window.onscroll = function() {
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-            backToTopBtn.style.display = "block";
-        } else {
-            backToTopBtn.style.display = "none";
-        }
-    };
+applyTheme(resolveTheme());
 
-    // 当用户点击按钮时，返回页面顶部
-    backToTopBtn.onclick = function() {
+if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+        const nextTheme = document.body.classList.contains("dark-theme")
+            ? "light-theme"
+            : "dark-theme";
+        applyTheme(nextTheme);
+    });
+}
+
+function updateBackToTopVisibility() {
+    if (!backToTopBtn) {
+        return;
+    }
+
+    const shouldShow = document.body.scrollTop > 20 || document.documentElement.scrollTop > 20;
+    backToTopBtn.style.display = shouldShow ? "flex" : "none";
+}
+
+if (backToTopBtn) {
+    backToTopBtn.addEventListener("click", () => {
         window.scrollTo({
             top: 0,
-            behavior: 'smooth'
+            behavior: "smooth",
         });
-    };
-};
+    });
+}
+
+window.addEventListener("scroll", updateBackToTopVisibility, { passive: true });
+window.addEventListener("load", updateBackToTopVisibility);

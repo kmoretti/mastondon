@@ -4,7 +4,7 @@
  根据memos.top 项目修改而来
 ## 环境变量
 ```
-HOST=https://jiong.us #实例名
+HOST=https://mastodon.social #实例名
 LIMIT=20 #获取的嘟文数量
 USERID=110710864910866001 ## UserID
 TITTLE=Retirement Memos #标题
